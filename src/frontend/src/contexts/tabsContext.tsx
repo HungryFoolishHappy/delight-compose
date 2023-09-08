@@ -473,7 +473,6 @@ export function TabsProvider({ children }: { children: ReactNode }) {
       if (flowData.description == "") {
         flowData.description = getRandomDescription();
       }
-
       // Create a new flow with a default name if no flow is provided.
       const newFlow = createNewFlow(flowData, flow!);
       processFlowEdges(newFlow);
@@ -482,7 +481,7 @@ export function TabsProvider({ children }: { children: ReactNode }) {
       const flowName = addVersionToDuplicates(newFlow, flows);
 
       newFlow.name = flowName;
-
+      
       try {
         const { id } = await saveFlowToDatabase(newFlow);
         // Change the id to the new id.
@@ -564,6 +563,7 @@ export function TabsProvider({ children }: { children: ReactNode }) {
     name: flow?.name ?? getRandomName(),
     data: flowData.data,
     id: "",
+    formMode: false,
   });
 
   const addFlowToLocalState = (newFlow: FlowType) => {

@@ -87,7 +87,9 @@ def update_flow(
 ):
     """Update a flow."""
 
-    db_flow = read_flow(session=session, flow_id=flow_id, current_user=current_user)
+    db_flow = read_flow(
+        session=session, flow_id=flow_id, current_user=current_user
+    )
     if not db_flow:
         raise HTTPException(status_code=404, detail="Flow not found")
     flow_data = flow.dict(exclude_unset=True)
@@ -110,7 +112,9 @@ def delete_flow(
     current_user: User = Depends(get_current_active_user),
 ):
     """Delete a flow."""
-    flow = read_flow(session=session, flow_id=flow_id, current_user=current_user)
+    flow = read_flow(
+        session=session, flow_id=flow_id, current_user=current_user
+    )
     if not flow:
         raise HTTPException(status_code=404, detail="Flow not found")
     session.delete(flow)
@@ -159,7 +163,9 @@ async def upload_file(
     for flow in flow_list.flows:
         flow.user_id = current_user.id
 
-    return create_flows(session=session, flow_list=flow_list, current_user=current_user)
+    return create_flows(
+        session=session, flow_list=flow_list, current_user=current_user
+    )
 
 
 @router.get("/download/", response_model=FlowListRead, status_code=200)

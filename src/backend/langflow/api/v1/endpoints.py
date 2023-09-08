@@ -1,6 +1,9 @@
 from http import HTTPStatus
 from typing import Annotated, Any, Optional, Union
-from langflow.services.auth.utils import api_key_security, get_current_active_user
+from langflow.services.auth.utils import (
+    api_key_security,
+    get_current_active_user,
+)
 
 from langflow.services.cache.utils import save_uploaded_file
 from langflow.services.database.models.flow import Flow
@@ -53,8 +56,8 @@ def get_all(
         for path in settings_manager.settings.COMPONENTS_PATH:
             if str(path) in processed_paths:
                 continue
-            custom_component_dict = build_langchain_custom_component_list_from_path(
-                str(path)
+            custom_component_dict = (
+                build_langchain_custom_component_list_from_path(str(path))
             )
             custom_component_dicts.append(custom_component_dict)
             processed_paths.append(str(path))
@@ -93,7 +96,9 @@ async def process_flow(
     inputs: Optional[dict] = None,
     tweaks: Optional[dict] = None,
     clear_cache: Annotated[bool, Body(embed=True)] = False,  # noqa: F821
-    session_id: Annotated[Union[None, str], Body(embed=True)] = None,  # noqa: F821
+    session_id: Annotated[
+        Union[None, str], Body(embed=True)
+    ] = None,  # noqa: F821
     api_key_user: User = Depends(api_key_security),
 ):
     """
@@ -143,7 +148,8 @@ async def process_flow(
             ) from exc
         else:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=str(exc),
             ) from exc
     except Exception as e:
         # Log stack trace
@@ -186,3 +192,39 @@ async def custom_component(
     extractor.is_check_valid()
 
     return build_langchain_template_custom_component(extractor)
+
+
+@router.get("/templates", status_code=HTTPStatus.OK)
+async def get_templates():
+    return [
+        {
+            "id": 1,
+            "name": "Basic Chat",
+            "description": "Basic chat with Prompt and History",
+            "url": "https://raw.githubusercontent.com/logspace-ai/langflow_examples/main/examples/Basic%20Chat%20with%20Prompt%20and%20History.json",
+        },
+        {
+            "id": 2,
+            "name": "CSV Loader",
+            "description": "Agent with CSV capabilities",
+            "url": "https://raw.githubusercontent.com/logspace-ai/langflow_examples/main/examples/CSV%20Loader.json",
+        },
+        {
+            "id": 3,
+            "name": "Calculator",
+            "description": "Calculator Agent",
+            "url": "https://raw.githubusercontent.com/logspace-ai/langflow_examples/main/examples/Calculator.json",
+        },
+        {
+            "id": 4,
+            "name": "Github Issues Parser",
+            "description": "Helps parse your Github issues",
+            "url": "https://raw.githubusercontent.com/logspace-ai/langflow_examples/main/examples/Github%20Issue%20Parser.json",
+        },
+        {
+            "id": 5,
+            "name": "Midjourney",
+            "description": "Midjourney prompt chain",
+            "url": "https://raw.githubusercontent.com/logspace-ai/langflow_examples/main/examples/MidJourney%20Prompt%20Chain.json",
+        },
+    ]

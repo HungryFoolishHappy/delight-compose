@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DropdownButton from "../../components/DropdownButtonComponent";
 import { CardComponent } from "../../components/cardComponent";
@@ -8,6 +8,10 @@ import { SkeletonCardComponent } from "../../components/skeletonCardComponent";
 import { Button } from "../../components/ui/button";
 import { USER_PROJECTS_HEADER } from "../../constants/constants";
 import { TabsContext } from "../../contexts/tabsContext";
+import NewProjectModal from "../../modals/NewProjectModal";
+import ShadTooltip from "../../components/ShadTooltipComponent";
+import { classNames } from "../../utils/utils";
+
 export default function HomePage(): JSX.Element {
   const {
     flows,
@@ -19,6 +23,8 @@ export default function HomePage(): JSX.Element {
     uploadFlow,
     isLoading,
   } = useContext(TabsContext);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownOptions = [
     {
       name: "Import from JSON",
@@ -82,6 +88,41 @@ export default function HomePage(): JSX.Element {
         <span className="main-page-description-text">
           Manage your personal projects. Download or upload your collection.
         </span>
+        <div className="button-div-style">
+          <Button
+            variant="primary"
+            onClick={() => {
+              downloadFlows();
+            }}
+          >
+            <IconComponent name="Download" className="main-page-nav-button" />
+            Download Collection
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              uploadFlows();
+            }}
+          >
+            <IconComponent name="Upload" className="main-page-nav-button" />
+            Upload Collection
+          </Button>
+          <NewProjectModal >
+            <ShadTooltip content="New Project" side="top">
+                <div className={classNames("extra-side-bar-buttons")}>
+                    <IconComponent name="Plus" className="side-bar-button-size" /> New Project
+                </div>
+            </ShadTooltip>
+        </NewProjectModal>
+        </div>
+      </div>
+
+        
+
+      <span className="main-page-description-text">
+        Manage your personal projects. Download or upload your collection.
+      </span>
+      
         <div className="main-page-flows-display">
           {isLoading && flows.length == 0 ? (
             <>
@@ -118,7 +159,6 @@ export default function HomePage(): JSX.Element {
             ))
           )}
         </div>
-      </div>
     </>
   );
 }

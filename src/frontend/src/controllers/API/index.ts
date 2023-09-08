@@ -109,6 +109,7 @@ export async function saveFlowToDatabase(newFlow: {
   id: string;
   data: ReactFlowJsonObject | null;
   description: string;
+  formMode: boolean;
   style?: FlowStyleType;
 }): Promise<FlowType> {
   try {
@@ -116,6 +117,7 @@ export async function saveFlowToDatabase(newFlow: {
       name: newFlow.name,
       data: newFlow.data,
       description: newFlow.description,
+      formMode: newFlow.formMode
     });
 
     if (response.status !== 201) {
@@ -171,6 +173,17 @@ export async function readFlowsFromDatabase() {
     console.error(error);
     throw error;
   }
+}
+
+/**
+ * Reads all templates from the database.
+ *
+ * @returns {Promise<any>} The templates data.
+ * @throws Will throw an error if reading fails.
+ */
+export async function readTemplatesFromDatabase() {
+  const response = await api.get(`/api/v1/templates`);
+  return response.data
 }
 
 export async function downloadFlowsFromDatabase() {

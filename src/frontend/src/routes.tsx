@@ -8,6 +8,7 @@ import LoginAdminPage from "./pages/AdminPage/LoginPage";
 import ApiKeysPage from "./pages/ApiKeysPage";
 import CommunityPage from "./pages/CommunityPage";
 import FlowPage from "./pages/FlowPage";
+import FormPage from "./pages/FormPage";
 import HomePage from "./pages/MainPage";
 import ViewPage from "./pages/ViewPage";
 import DeleteAccountPage from "./pages/deleteAccountPage";
@@ -112,6 +113,10 @@ const Router = () => {
           }
         ></Route>
       </Route>
+      <Route path="/form/:id/">
+        <Route path="" element={<FormPage />} />
+      </Route>
+      {/* <Route path="*" element={<HomePage />} /> */}
     </Routes>
   );
 };

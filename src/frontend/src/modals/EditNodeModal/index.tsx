@@ -63,6 +63,14 @@ const EditNodeModal = forwardRef(
       });
     }
 
+    function toggleForm(n) {
+      setMyData((old) => {
+        let newData = cloneDeep(old);
+        newData.node.template[n].form = !newData.node.template[n].form;
+        return newData;
+      });
+    }
+
     const handleOnNewValue = (
       newValue: string | string[] | boolean,
       name: string
@@ -113,6 +121,7 @@ const EditNodeModal = forwardRef(
                           VALUE
                         </TableHead>
                         <TableHead className="h-7 text-center">SHOW</TableHead>
+                        <TableHead className="h-7 text-center">Form</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody className="p-0">
@@ -353,6 +362,16 @@ const EditNodeModal = forwardRef(
                                   setEnabled={(e) =>
                                     changeAdvanced(templateParam)
                                   }
+                                  disabled={disabled}
+                                  size="small"
+                                />
+                              </div>
+                            </TableCell>
+                            <TableCell className="p-0 text-right">
+                              <div className="items-center text-center">
+                                <ToggleShadComponent
+                                  enabled={myData.node.template[n].form}
+                                  setEnabled={(e) => toggleForm(n)}
                                   disabled={disabled}
                                   size="small"
                                 />
